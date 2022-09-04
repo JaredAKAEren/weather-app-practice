@@ -16,6 +16,7 @@
                 <i class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"></i>
             </div>
 
+            <!-- 信息按钮的弹出窗口 -->
             <BaseModel :model-active="modelActive" @close-model="toggleModel">
                 <div class="text-black">
                     <h1 class="text-2xl mb-1">关于:</h1>
@@ -54,6 +55,7 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import BaseModel from './BaseModel.vue';
 
+// 控制开关信息按钮的弹出窗口
 const modelActive = ref(null);
 const toggleModel = () => {
     modelActive.value = !modelActive.value;

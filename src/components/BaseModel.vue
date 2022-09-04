@@ -29,7 +29,7 @@ defineProps({
 </script>
 
 <style scoped>
-/* 打开关闭过程中 */
+/* 半透明背景部分 */
 .model-outer-enter-active,
 .model-outer-leave-active {
     transition: opacity 0.3s cubic-bezier(0.52, 0.02, 0.19, 1.02);
@@ -41,6 +41,7 @@ defineProps({
     opacity: 0;
 }
 
+/* popup窗口部分 */
 .model-inner-enter-active {
     transition: all 0.3s cubic-bezier(0.52, 0.02, 0.19, 1.02) 0.15s;
 }
