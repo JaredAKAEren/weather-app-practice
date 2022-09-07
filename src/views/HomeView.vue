@@ -5,6 +5,8 @@
         type="text"
         v-model="searchQuery"
         @input="getSearchResults"
+        @compositionstart="onInputStart"
+        @compositionend="onInputEnd"
         placeholder="输入需要添加的城市"
         class="
           py-2
@@ -59,26 +61,39 @@ import axios from "axios";
 
 const qweatherAPIKey = "5a7251cd3b2e4396b101716cf2a9a74b";
 const searchQuery = ref("");
+const isInputFinish = ref(false);
 const queryTimeout = ref(null);
 const qweatherSearchResults = ref(null);
 const searchError = ref(null);
 
+const onInputStart = () => {
+  isInputFinish.value = false;
+  // console.log(isInputFinish.value);
+};
+
+const onInputEnd = () => {
+  isInputFinish.value = true;
+  // console.log(isInputFinish.value);
+};
+
 const getSearchResults = () => {
   clearTimeout(queryTimeout.value);
   queryTimeout.value = setTimeout(async () => {
-    if (searchQuery.value !== "") {
-      try {
-        const result = await axios.get(
+    if (searchQuery.value !== "" && isInputFinish.value) {
+      await axios
+        .get(
           `https://geoapi.qweather.com/v2/city/lookup?location=${searchQuery.value}&key=${qweatherAPIKey}`
-        );
-        if (result.data.code == 200) {
-          qweatherSearchResults.value = result.data.location;
-        } else {
-          qweatherSearchResults.value = "";
-        }
-      } catch {
-        searchError.value = true;
-      }
+        )
+        .then((response) => {
+          if (response.data.code == 200) {
+            qweatherSearchResults.value = response.data.location;
+          } else {
+            qweatherSearchResults.value = "";
+          }
+        })
+        .catch((error) => {
+          searchError.value = true;
+        });
       return;
     }
     qweatherSearchResults.value = null;
