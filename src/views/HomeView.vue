@@ -46,8 +46,7 @@
           <li
             v-for="searchResult in qweatherSearchResults"
             :key="searchResult.id"
-            class="p-2 cursor-pointer hover:bg-weather-primary
-            rounded-lg"
+            class="p-2 cursor-pointer hover:bg-weather-primary rounded-lg"
             @click="previewCity(searchResult)"
           >
             <!-- 名称 - 上级行政区(), 一级行政区域, 国家 -->
@@ -118,11 +117,11 @@ const router = useRouter();
 
 // 显示选中的城市
 const previewCity = (searchResult) => {
-  console.log(searchResult);
   router.push({
     name: "cityView",
     params: { province: searchResult.adm1, city: searchResult.adm2 },
     query: {
+      id: searchResult.id,
       lat: searchResult.lat,
       lon: searchResult.lon,
       preview: true,
