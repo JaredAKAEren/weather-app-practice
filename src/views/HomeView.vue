@@ -32,6 +32,7 @@
           py-2
           px-2
           top-[66px]
+          rounded-xl
         "
       >
         <!-- 出现搜索错误的提示语句 -->
@@ -45,7 +46,9 @@
           <li
             v-for="searchResult in qweatherSearchResults"
             :key="searchResult.id"
-            class="py-2 cursor-pointer"
+            class="p-2 cursor-pointer hover:bg-weather-primary
+            rounded-lg"
+            @click="previewCity(searchResult)"
           >
             <!-- 名称 - 上级行政区(), 一级行政区域, 国家 -->
             {{
@@ -61,6 +64,7 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 // 城市信息查询API_Key
 const qweatherAPIKey = "5a7251cd3b2e4396b101716cf2a9a74b";
@@ -108,5 +112,21 @@ const getSearchResults = () => {
     }
     qweatherSearchResults.value = null;
   }, 300);
+};
+
+const router = useRouter();
+
+// 显示选中的城市
+const previewCity = (searchResult) => {
+  console.log(searchResult);
+  router.push({
+    name: "cityView",
+    params: { province: searchResult.adm1, city: searchResult.adm2 },
+    query: {
+      lat: searchResult.lat,
+      lon: searchResult.lon,
+      preview: true,
+    },
+  });
 };
 </script>
