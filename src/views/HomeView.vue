@@ -1,6 +1,7 @@
 <template>
   <main class="container text-white">
     <div class="pt-4 mb-8 relative">
+      <!-- 城市搜索输入框 -->
       <input
         type="text"
         v-model="searchQuery"
@@ -19,6 +20,8 @@
           focus:shadow-[0px_1px_0_0_#004E70]
         "
       />
+
+      <!-- 显示城市搜索结果的列表 -->
       <ul
         v-if="qweatherSearchResults != null"
         class="
@@ -31,13 +34,13 @@
           top-[66px]
         "
       >
+        <!-- 出现搜索错误的提示语句 -->
         <p v-if="searchError" class="py-2">抱歉，出现了一些错误，请重试。</p>
-        <p
-          v-if="!searchError && qweatherSearchResults.length === 0"
-          class="py-2"
-        >
+        <p v-if="!searchError && qweatherSearchResults == ''" class="py-2">
           查询的地区不存在，请重试。
         </p>
+
+        <!-- 城市搜索结果 -->
         <template v-else>
           <li
             v-for="searchResult in qweatherSearchResults"
@@ -59,23 +62,30 @@
 import { ref } from "vue";
 import axios from "axios";
 
+// 城市信息查询API_Key
 const qweatherAPIKey = "5a7251cd3b2e4396b101716cf2a9a74b";
+// 输入框内容
 const searchQuery = ref("");
+// 判断中文拼写输入是否完成
 const isInputFinish = ref(false);
+// 懒加载延时
 const queryTimeout = ref(null);
+// 城市搜索结果
 const qweatherSearchResults = ref(null);
+// 判断搜索请求是否出错
 const searchError = ref(null);
 
+// 监测中文拼写输入的开始(禁止请求)
 const onInputStart = () => {
   isInputFinish.value = false;
-  // console.log(isInputFinish.value);
 };
 
+// 监测中文拼写输入的完成(允许请求)
 const onInputEnd = () => {
   isInputFinish.value = true;
-  // console.log(isInputFinish.value);
 };
 
+// 请求城市信息查询API
 const getSearchResults = () => {
   clearTimeout(queryTimeout.value);
   queryTimeout.value = setTimeout(async () => {
