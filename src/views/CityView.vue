@@ -3,7 +3,7 @@
     <Suspense>
       <AsyncCityView></AsyncCityView>
       <template #fallback>
-        <p>加载中......</p>
+        <p class="text-white w-full text-center mt-4">加载中......</p>
       </template>
     </Suspense>
   </div>

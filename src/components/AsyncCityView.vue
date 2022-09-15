@@ -51,8 +51,32 @@
       </div>
     </div>
 
+    <!-- 分割线 -->
+    <hr class="border-white w-full border-opacity-10 border" />
+
     <!-- 逐天天气 -->
-    <div></div>
+    <div class="max-w-screen-md w-full py-12">
+      <div class="text-white mx-8">
+        <h2 class="mb-4">未来7天天气</h2>
+        <div
+          v-for="(day, index) in weatherDataDaily"
+          :key="index"
+          class="flex items-center mb-2"
+        >
+          <!-- 图标 -->
+          <div class="text-lg mr-2">
+            <i :class="`qi-${day.iconDay}-fill`"></i>
+          </div>
+          <!-- 日期 -->
+          <p class="flex-1">
+            {{ day.fxDate.substr(5).replace(/^0/, "") }} · {{ day.textDay }}
+          </p>
+          <div>
+            <p>{{ day.tempMax }}&deg; / {{ day.tempMin }}&deg;</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -69,7 +93,7 @@ const obsTimeFormat = inject("obsTimeFormat");
 // 城市信息查询API_Key
 const qweatherAPIKey = "5a7251cd3b2e4396b101716cf2a9a74b";
 
-// 获取当前城市的实时天气信息
+// 获取当前城市实时天气信息
 const getWeatherDataNow = async () => {
   const weatherDataNow = ref(null);
 
@@ -93,7 +117,7 @@ const getWeatherDataNow = async () => {
 // 调用getWeatherDataNow方法获取并保存实时天气信息
 const weatherDataNow = await getWeatherDataNow();
 
-// 获取当前城市的每小时天气信息
+// 获取当前城市未来24小时的天气信息
 const getWeatherDataHourly = async () => {
   const weatherDataHourly = ref(null);
 
@@ -104,7 +128,6 @@ const getWeatherDataHourly = async () => {
     .then((response) => {
       if (response.data.code == 200) {
         weatherDataHourly.value = response.data.hourly;
-        // console.log(weatherDataHourly.value);
         weatherDataHourly.value.forEach((hour) => {
           hour.fxTime = obsTimeFormat(hour.fxTime);
         });
@@ -116,4 +139,24 @@ const getWeatherDataHourly = async () => {
   return weatherDataHourly.value;
 };
 const weatherDataHourly = await getWeatherDataHourly();
+
+// 获取当前城市未来七天的天气信息
+const getWeatherDataDaily = async () => {
+  const weatherDataDaily = ref(null);
+
+  await axios
+    .get(
+      `https://devapi.qweather.com/v7/weather/7d?location=${route.query.id}&key=${qweatherAPIKey}`
+    )
+    .then((response) => {
+      if (response.data.code == 200) {
+        weatherDataDaily.value = response.data.daily;
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  return weatherDataDaily.value;
+};
+const weatherDataDaily = await getWeatherDataDaily();
 </script>

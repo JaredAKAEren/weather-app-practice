@@ -78,6 +78,8 @@ const qweatherSearchResults = ref(null);
 // 判断搜索请求是否出错
 const searchError = ref(null);
 
+const userAgent = navigator.userAgent;
+
 // 监测中文拼写输入的开始(禁止请求)
 const onInputStart = () => {
   isInputFinish.value = false;
@@ -92,7 +94,11 @@ const onInputEnd = () => {
 const getSearchResults = () => {
   clearTimeout(queryTimeout.value);
   queryTimeout.value = setTimeout(async () => {
-    if (searchQuery.value !== "" && isInputFinish.value) {
+    // 电脑端中文输入法会多次触发input事件,通过composition事件避免触发
+    if (
+      searchQuery.value !== "" &&
+      (isInputFinish.value || userAgent.indexOf("Android") > -1)
+    ) {
       await axios
         .get(
           `https://geoapi.qweather.com/v2/city/lookup?location=${searchQuery.value}&key=${qweatherAPIKey}`
