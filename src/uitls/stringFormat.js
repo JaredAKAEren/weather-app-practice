@@ -17,7 +17,7 @@ export const obsTimeFormat = function (obsTime) {
     weatherDate.value = `${weatherYear.value}年${weatherMo.value}月${weatherDay.value}日`;
 
     // 处理时间
-    weatherTime.value = obsTime.substr(11, 5).replace(/^0/, "");
+    weatherTime.value = obsTime.substr(11, 5);
     obsTime = `${weatherDate.value} ${weatherTime.value}`;
 
     return obsTime;

@@ -38,7 +38,7 @@
           >
             <!-- 时间 -->
             <p class="text-sm">
-              {{ hourData.fxTime.substr(11, 5) }}
+              {{ hourData.fxTime.substr(11, 6) }}
             </p>
             <!-- 图标 -->
             <div class="text-2xl">
