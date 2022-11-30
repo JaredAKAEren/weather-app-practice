@@ -30,7 +30,7 @@
     <div class="max-w-screen-md w-full py-12">
       <div class="text-white mx-8">
         <h2 class="mb-4">未来24小时天气</h2>
-        <div class="flex gap-10 overflow-x-scroll">
+        <div class="flex gap-10 overflow-x-scroll scrollbar">
           <div
             v-for="(hourData, index) in weatherDataHourly"
             :key="index"

@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+
+    /* 滚动条(条和轨道) */
+    .scrollbar::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    /* 滚动条轨道 */
+    .scrollbar::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: #f1f1f1;
+    }
+
+    /* 滚动条 */
+    .scrollbar::-webkit-scrollbar-thumb {
+        border-radius: 100vh;
+        background: #c0c0c0;
+        border: 3px solid #f1f1f1;
+    }
+
+    /* 滚动条悬停 */
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+}
