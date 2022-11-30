@@ -2,14 +2,8 @@
   <main class="container text-white">
     <div class="pt-4 mb-8 relative">
       <!-- 城市搜索输入框 -->
-      <input
-        type="text"
-        v-model="searchQuery"
-        @input="getSearchResults"
-        @compositionstart="onInputStart"
-        @compositionend="onInputEnd"
-        placeholder="输入需要添加的城市"
-        class="
+      <input type="text" v-model="searchQuery" @input="getSearchResults" @compositionstart="onInputStart"
+        @compositionend="onInputEnd" placeholder="输入需要添加的城市" class="
           py-2
           px-1
           w-full
@@ -18,13 +12,10 @@
           focus:border-weather-secondary
           focus:outline-none
           focus:shadow-[0px_1px_0_0_#004E70]
-        "
-      />
+        " />
 
       <!-- 显示城市搜索结果的列表 -->
-      <ul
-        v-if="qweatherSearchResults != null"
-        class="
+      <ul v-if="qweatherSearchResults != null" class="
           absolute
           bg-weather-secondary
           w-full
@@ -33,8 +24,7 @@
           px-2
           top-[66px]
           rounded-xl
-        "
-      >
+        ">
         <!-- 出现搜索错误的提示语句 -->
         <p v-if="searchError" class="py-2">抱歉，出现了一些错误，请重试。</p>
         <p v-if="!searchError && qweatherSearchResults == ''" class="py-2">
@@ -43,19 +33,22 @@
 
         <!-- 城市搜索结果 -->
         <template v-else>
-          <li
-            v-for="searchResult in qweatherSearchResults"
-            :key="searchResult.id"
-            class="p-2 cursor-pointer hover:bg-weather-primary rounded-lg"
-            @click="previewCity(searchResult)"
-          >
+          <li v-for="searchResult in qweatherSearchResults" :key="searchResult.id"
+            class="p-2 cursor-pointer hover:bg-weather-primary rounded-lg" @click="previewCity(searchResult)">
             <!-- 名称 - 上级行政区(), 一级行政区域, 国家 -->
-            {{
-              `${searchResult.name} - ${searchResult.adm2}, ${searchResult.adm1}, ${searchResult.country}`
-            }}
+            {{ `${searchResult.name} - ${searchResult.adm2}, ${searchResult.adm1}, ${searchResult.country}` }}
           </li>
         </template>
       </ul>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <Suspense>
+        <CityList />
+        <template #fallback>
+          <p>加载中...</p>
+        </template>
+      </Suspense>
     </div>
   </main>
 </template>
@@ -64,6 +57,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import CityList from "../components/CityList.vue"
 
 // 城市信息查询API_Key
 const qweatherAPIKey = "5a7251cd3b2e4396b101716cf2a9a74b";

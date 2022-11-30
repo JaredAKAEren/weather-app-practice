@@ -13,7 +13,8 @@
             <div class="flex gap-3 flex-1 justify-end">
                 <i class="fa-solid fa-circle-info text-xl hover:text-weather-secondary duration-150 cursor-pointer"
                     @click="toggleModel"></i>
-                <i class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"></i>
+                <i @click="addCity" v-if="route.query.preview"
+                    class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"></i>
             </div>
 
             <!-- 信息按钮的弹出窗口 -->
@@ -52,12 +53,43 @@
 
 <script setup>
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute, useRouter } from 'vue-router';
 import BaseModel from './BaseModel.vue';
+import { uid } from 'uid'
 
 // 控制开关信息按钮的弹出窗口
 const modelActive = ref(null);
 const toggleModel = () => {
     modelActive.value = !modelActive.value;
+}
+
+const savedCityes = ref([])
+const route = useRoute()
+const router = useRouter()
+const addCity = () => {
+    if (localStorage.getItem("savedCityes")) {
+        savedCityes.value = JSON.parse(localStorage.getItem("savedCityes"))
+    }
+
+    const locationObj = {
+        id: uid(),
+        apiId: route.query.id,
+        province: route.params.province,
+        city: route.params.city,
+        coords: {
+            lat: route.query.lat,
+            lon: route.query.lon
+        }
+    }
+
+    savedCityes.value.push(locationObj)
+    localStorage.setItem(
+        "savedCityes",
+        JSON.stringify(savedCityes.value)
+    )
+
+    let query = Object.assign({}, route.query)
+    delete query.preview
+    router.replace({ query })
 }
 </script>

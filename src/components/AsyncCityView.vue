@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col flex-1 items-center">
     <!-- 提示横幅 -->
-    <div class="text-white w-full text-center p-4 bg-weather-secondary">
+    <div v-if="route.query.preview" class="text-white w-full text-center p-4 bg-weather-secondary">
       <p>点击 “+” 添加当前城市到首页。</p>
     </div>
 
@@ -31,11 +31,7 @@
       <div class="text-white mx-8">
         <h2 class="mb-4">未来24小时天气</h2>
         <div class="flex gap-10 overflow-x-scroll scrollbar">
-          <div
-            v-for="(hourData, index) in weatherDataHourly"
-            :key="index"
-            class="flex flex-col items-center gap-3"
-          >
+          <div v-for="(hourData, index) in weatherDataHourly" :key="index" class="flex flex-col items-center gap-3">
             <!-- 时间 -->
             <p class="text-sm">
               {{ hourData.fxTime.substr(11, 6) }}
@@ -58,11 +54,7 @@
     <div class="max-w-screen-md w-full py-12">
       <div class="text-white mx-8">
         <h2 class="mb-4">未来7天天气</h2>
-        <div
-          v-for="(day, index) in weatherDataDaily"
-          :key="index"
-          class="flex items-center mb-2"
-        >
+        <div v-for="(day, index) in weatherDataDaily" :key="index" class="flex items-center mb-2">
           <!-- 图标 -->
           <div class="text-lg mr-2">
             <i :class="`qi-${day.iconDay}-fill`"></i>
