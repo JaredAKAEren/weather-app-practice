@@ -69,6 +69,12 @@
         </div>
       </div>
     </div>
+
+    <div v-if="!route.query.preview" @click="removeCity(route.query.id)"
+      class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500">
+      <i class="fa-solid fa-trash"></i>
+      <p>删除</p>
+    </div>
   </div>
 </template>
 
@@ -76,9 +82,10 @@
 import { ref } from "@vue/reactivity";
 import { inject } from "@vue/runtime-core";
 import axios from "axios";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter()
 
 // 引入全局方法解析天气数据中的obsTime
 const obsTimeFormat = inject("obsTimeFormat");
@@ -151,4 +158,14 @@ const getWeatherDataDaily = async () => {
   return weatherDataDaily.value;
 };
 const weatherDataDaily = await getWeatherDataDaily();
+
+const removeCity = (id) => {
+  const cities = JSON.parse(localStorage.getItem("savedCityes"))
+  const updateCities = cities.filter((city) => city.apiId !== id)
+  localStorage.setItem("savedCityes", JSON.stringify(updateCities))
+
+  router.push({
+    name: "home"
+  })
+}
 </script>
