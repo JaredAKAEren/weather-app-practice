@@ -155,6 +155,10 @@ const getWeatherDataDaily = async () => {
     .catch((error) => {
       console.log(error);
     });
+
+
+  await new Promise((res) => setTimeout(res, 200))
+
   return weatherDataDaily.value;
 };
 const weatherDataDaily = await getWeatherDataDaily();

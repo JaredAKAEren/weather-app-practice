@@ -46,7 +46,7 @@
       <Suspense>
         <CityList />
         <template #fallback>
-          <p>加载中...</p>
+          <CityCardSkeleton />
         </template>
       </Suspense>
     </div>
@@ -58,6 +58,7 @@ import { ref } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
 import CityList from "../components/CityList.vue"
+import CityCardSkeleton from "../components/CityCardSkeleton.vue";
 
 // 城市信息查询API_Key
 const qweatherAPIKey = "5a7251cd3b2e4396b101716cf2a9a74b";
